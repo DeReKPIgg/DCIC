@@ -1,6 +1,6 @@
-`define CYCLE_TIME 5
+`define CYCLE_TIME 1.2
 
-`define PATTERN_NUM 2000
+`define PATTERN_NUM 12
 
 module PATTERN(
     clk,
@@ -120,6 +120,7 @@ initial begin
     $display(" Total Error Bits    : %d", total_errors);
     $display(" Bit Error Rate (BER): %f", ber);
     $display(" Error Percentage    : %0.2f%%", ber * 100);
+    $display(" Processing time    : %0.2f%%", latency*CYCLE);
     $display("==========================================================");
     $finish;
 end
@@ -191,8 +192,8 @@ task input_R_task; begin
     
     index_cnt=0;
 
-    for ( i = 0; i < 6; i++) begin
-        for (j = 0; j < 6; j++) begin
+    for ( i = 0; i < 6; i=i+1) begin
+        for (j = 0; j < 6; j=+1) begin
             k = $fscanf(input_R_file, "%b", temp_temp);
             if (j >= i) begin
                 temp_R[index_cnt] = temp_temp;
@@ -202,7 +203,7 @@ task input_R_task; begin
     end
 
     // InData to design by 3 cycles
-    for (i=0; i<3; i++) begin
+    for (i=0; i<3; i=i+1) begin
         InData = {temp_R[i*6], temp_R[i*6+1], temp_R[i*6+2],
                                         temp_R[i*6+3], temp_R[i*6+4], temp_R[i*6+5]};
         repeat(1) @(negedge clk);
@@ -226,7 +227,7 @@ task input_task; begin
     flagChannelorData = 1'b0;
 
     // read from z.txt
-    for ( i = 0; i < 6; i++) begin
+    for ( i = 0; i < 6; i=i+1) begin
         k = $fscanf(input_z_file, "%b", temp_R[i]);
     end
 

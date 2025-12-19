@@ -16,13 +16,17 @@ wire out_valid;
 initial begin
     /* iverilog format */
 
-    $dumpfile("waveform.vcd");
-	$dumpvars(0, TESTBED);
+    // $dumpfile("waveform.vcd");
+	// $dumpvars(0, TESTBED);
 
     /* ADFP format */
 
-    // $fsdbDumpfile("chip.fsdb");
-    // $fsdbDumpvars(0, "+mda");
+    `ifdef GATE
+        $sdf_annotate("../02_SYN/Netlist/detector_syn.sdf", my_detector);
+    `endif
+
+    $fsdbDumpfile("chip.fsdb");
+    $fsdbDumpvars(0, "+mda");
 
 end
 

@@ -196,7 +196,9 @@ always @(posedge clk, negedge rst_n) begin
     // store candidates [2'b00, 2'b01, 2'b10, 2'b11] .* first non-zero of each row
     if (!rst_n) for(integer i=0; i<4; i=i+1) multiplied_candidate[i] <= 0;
     else for(integer i=0; i<4; i=i+1) multiplied_candidate[i] <= multiplied_candidate_nxt[i];
+end
 
+always @(posedge clk, negedge rst_n) begin
     if (!rst_n) for(integer i=0; i<3; i=i+1) summation_mul_store[i] <= 0;
     else for(integer i=0; i<3; i=i+1) summation_mul_store[i] <= summation_mul[i];
 end
@@ -846,8 +848,8 @@ end
 // addend
 always @(*) begin
     // default
-    //for(integer i=0; i<6; i=i+1)for(integer j=0; j<2; j=j+1) addend[i][j] = 0;
-    addend = '{default: '{default: 0}};
+    for(integer i=0; i<6; i=i+1)for(integer j=0; j<2; j=j+1) addend[i][j] = 0;
+    //addend = '{default: '{default: 0}};
 
     // LAYER6
     if (state==LAYER6) begin
