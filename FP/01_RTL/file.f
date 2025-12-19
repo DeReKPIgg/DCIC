@@ -1,0 +1,3 @@
+../00_TESTBED/TESTBED.v
+../00_TESTBED/PATTERN.v
+detector.v
