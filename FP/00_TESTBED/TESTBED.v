@@ -1,6 +1,6 @@
 `timescale 1ns/10ps
-`include "PATTERN.v"
-`include "../01_RTL/detector.v"
+//`include "PATTERN.v"
+//`include "../01_RTL/detector.v"
 
 module TESTBED;
 

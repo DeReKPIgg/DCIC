@@ -67,21 +67,21 @@ initial begin
     // files open
     //================================================================
 
-	input_R_file = $fopen("./R.txt","r");
+	input_R_file = $fopen("../00_TESTBED/R.txt","r");
 
     if (input_R_file == 0) begin
         $display("Failed to open R file");
         $finish;
     end
 
-    input_z_file = $fopen("./z.txt","r");
+    input_z_file = $fopen("../00_TESTBED/z.txt","r");
 
     if (input_R_file == 0) begin
         $display("Failed to open z file");
         $finish;
     end
 
-    golden_file=$fopen("./gt.txt", "r");
+    golden_file=$fopen("../00_TESTBED/gt.txt", "r");
 
     if (golden_file == 0) begin
         $display("Failed to open golden file");
