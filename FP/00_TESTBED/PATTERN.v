@@ -1,6 +1,6 @@
 `define CYCLE_TIME 5
 
-`define PATTERN_NUM 13
+`define PATTERN_NUM 2000
 
 module PATTERN(
     clk,
@@ -30,7 +30,7 @@ input wire out_valid;
 //================================================================
 // parameters & integer
 //================================================================
-integer PATNUM = 1;
+integer PATNUM = `PATTERN_NUM;
 integer patcount;
 integer input_R_file, input_z_file, golden_file;
 
@@ -40,6 +40,10 @@ integer index_cnt;
 integer latency;
 integer total_latency;
 
+integer error_bits;
+integer total_errors = 0;
+integer total_bits_compared = 0;
+real ber;
 //================================================================
 // temp software type variable
 //================================================================
@@ -95,7 +99,7 @@ initial begin
     input_R_task;
     // pattern loop
 
-    for (i_pat = 0; i_pat<13; i_pat=i_pat+1) begin
+    for (i_pat = 0; i_pat<PATNUM; i_pat=i_pat+1) begin
         input_task;
         wait_out_valid_task;
         check_ans;
@@ -103,6 +107,20 @@ initial begin
     end
 	//display_pass;
     repeat(3) @(negedge clk);
+
+    // Calculate BER
+    if (total_bits_compared > 0) 
+        ber = (total_errors * 1.0) / total_bits_compared;
+    else 
+        ber = 0;
+    $display("\n==========================================================");
+    $display("                  SIMULATION STATISTICS                    ");
+    $display("==========================================================");
+    $display(" Total Bits Compared : %d", total_bits_compared);
+    $display(" Total Error Bits    : %d", total_errors);
+    $display(" Bit Error Rate (BER): %f", ber);
+    $display(" Error Percentage    : %0.2f%%", ber * 100);
+    $display("==========================================================");
     $finish;
 end
 
@@ -230,19 +248,27 @@ task check_ans; begin
     //k = $fscanf(golden_file, "Pattern: %d", patcount);
 
     k = $fscanf(golden_file, "%b", golden_symbol);
+
+    error_bits = $countones(OutData ^ golden_symbol);
+
+    total_bits_compared = total_bits_compared + 12; // Each symbol is 12 bits
     
-    if (OutData !== golden_symbol) begin
-        $display ("             \033[0;31mFAIL Pattern NO. %d\033[m         ", i_pat);
-        //display_fail;
+    if (error_bits > 0) begin
+        total_errors = total_errors + error_bits; // Accumulate total errors
+        
+        $display ("            \033[0;31mFAIL Pattern NO. %d\033[m", i_pat);
         $display ("   ------------------------------------------------------------------------");
-        $display ("                                       FAIL                              ");
-		$display("                                   PATTERN NO.%4d 	                      ", i_pat);
-        $display ("   Output should be : %b , your answer is : %b           ", golden_symbol, OutData);
+        $display ("                             FAIL                                          ");
+        $display ("                        PATTERN NO.%4d                                     ", i_pat);
+        $display ("   Output: %b", OutData);
+        $display ("   Golden: %b", golden_symbol);
+        $display ("   Error bits in this pattern: %d", error_bits);
         $display ("   ------------------------------------------------------------------------");
-        //#(200);
-        //$finish ;
+    end 
+    else begin
+        display_pass_gradient(i_pat);
     end
-    else display_pass_gradient(i_pat);
+
 end endtask
 
 task display_fail; begin

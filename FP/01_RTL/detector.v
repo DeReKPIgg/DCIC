@@ -1478,28 +1478,28 @@ always @(*) begin
     encode_symbol = 0;
 
     if (leaf_value_nxt[0][21:20]==2'b00) begin
-        if (leaf_value_nxt[0][17:16]==4'b00) begin
+        if (leaf_value_nxt[0][17:16]==2'b00) begin
             case (leaf_value_nxt[0][1:0])
-                2'b00: encode_symbol =  {leaf_row5[3], leaf_row4[7], leaf_row3[15], leaf_row2[31], leaf_row1[31], leaf_row0[31]};
-                2'b01: encode_symbol =  {leaf_row5[3], leaf_row4[7], leaf_row3[15], leaf_row2[30], leaf_row1[30], leaf_row0[30]};
-                2'b10: encode_symbol =  {leaf_row5[3], leaf_row4[7], leaf_row3[14], leaf_row2[29], leaf_row1[29], leaf_row0[29]};
-                2'b11: encode_symbol =  {leaf_row5[3], leaf_row4[7], leaf_row3[14], leaf_row2[28], leaf_row1[28], leaf_row0[28]};
+                2'b00: encode_symbol =  {leaf_row5[0], leaf_row4[0], leaf_row3[0], leaf_row2[0], leaf_row1[0], leaf_row0[0]};
+                2'b01: encode_symbol =  {leaf_row5[0], leaf_row4[0], leaf_row3[0], leaf_row2[1], leaf_row1[1], leaf_row0[1]};
+                2'b10: encode_symbol =  {leaf_row5[0], leaf_row4[0], leaf_row3[1], leaf_row2[2], leaf_row1[2], leaf_row0[2]};
+                2'b11: encode_symbol =  {leaf_row5[0], leaf_row4[0], leaf_row3[1], leaf_row2[3], leaf_row1[3], leaf_row0[3]};
             endcase
-        end else if (leaf_value_nxt[0][17:16]==4'b01) begin
+        end else if (leaf_value_nxt[0][17:16]==2'b01) begin
             case (leaf_value_nxt[0][3:2])
                 2'b00: encode_symbol =  {leaf_row5[0], leaf_row4[1], leaf_row3[2], leaf_row2[4], leaf_row1[4], leaf_row0[4]};
                 2'b01: encode_symbol =  {leaf_row5[0], leaf_row4[1], leaf_row3[2], leaf_row2[5], leaf_row1[5], leaf_row0[5]};
                 2'b10: encode_symbol =  {leaf_row5[0], leaf_row4[1], leaf_row3[3], leaf_row2[6], leaf_row1[6], leaf_row0[6]};
                 2'b11: encode_symbol =  {leaf_row5[0], leaf_row4[1], leaf_row3[3], leaf_row2[7], leaf_row1[7], leaf_row0[7]};
             endcase
-        end else if (leaf_value_nxt[0][17:16]==4'b10) begin
+        end else if (leaf_value_nxt[0][17:16]==2'b10) begin
             case (leaf_value_nxt[0][5:4])
                 2'b00: encode_symbol =  {leaf_row5[1], leaf_row4[2], leaf_row3[4], leaf_row2[8], leaf_row1[8], leaf_row0[8]};
                 2'b01: encode_symbol =  {leaf_row5[1], leaf_row4[2], leaf_row3[4], leaf_row2[9], leaf_row1[9], leaf_row0[9]};
                 2'b10: encode_symbol =  {leaf_row5[1], leaf_row4[2], leaf_row3[5], leaf_row2[10], leaf_row1[10], leaf_row0[10]};
                 2'b11: encode_symbol =  {leaf_row5[1], leaf_row4[2], leaf_row3[5], leaf_row2[11], leaf_row1[11], leaf_row0[11]};
             endcase
-        end else if (leaf_value_nxt[0][17:16]==4'b11) begin
+        end else if (leaf_value_nxt[0][17:16]==2'b11) begin
             case (leaf_value_nxt[0][7:6])
                 2'b00: encode_symbol =  {leaf_row5[1], leaf_row4[3], leaf_row3[6], leaf_row2[12], leaf_row1[12], leaf_row0[12]};
                 2'b01: encode_symbol =  {leaf_row5[1], leaf_row4[3], leaf_row3[6], leaf_row2[13], leaf_row1[13], leaf_row0[13]};
@@ -1509,28 +1509,28 @@ always @(*) begin
         end
     end
     else if (leaf_value_nxt[0][21:20]==2'b01) begin
-        if (leaf_value_nxt[0][19:18]==4'b00) begin
+        if (leaf_value_nxt[0][19:18]==2'b00) begin
             case (leaf_value_nxt[0][9:8])
                 2'b00: encode_symbol =  {leaf_row5[2], leaf_row4[4], leaf_row3[8], leaf_row2[16], leaf_row1[16], leaf_row0[16]};
                 2'b01: encode_symbol =  {leaf_row5[2], leaf_row4[4], leaf_row3[8], leaf_row2[17], leaf_row1[17], leaf_row0[17]};
                 2'b10: encode_symbol =  {leaf_row5[2], leaf_row4[4], leaf_row3[9], leaf_row2[18], leaf_row1[18], leaf_row0[18]};
                 2'b11: encode_symbol =  {leaf_row5[2], leaf_row4[4], leaf_row3[9], leaf_row2[19], leaf_row1[19], leaf_row0[19]};
             endcase
-        end else if (leaf_value_nxt[0][19:18]==4'b01) begin
+        end else if (leaf_value_nxt[0][19:18]==2'b01) begin
             case (leaf_value_nxt[0][11:10])
                 2'b00: encode_symbol =  {leaf_row5[2], leaf_row4[5], leaf_row3[10], leaf_row2[20], leaf_row1[20], leaf_row0[20]};
                 2'b01: encode_symbol =  {leaf_row5[2], leaf_row4[5], leaf_row3[10], leaf_row2[21], leaf_row1[21], leaf_row0[21]};
                 2'b10: encode_symbol =  {leaf_row5[2], leaf_row4[5], leaf_row3[11], leaf_row2[22], leaf_row1[22], leaf_row0[22]};
                 2'b11: encode_symbol =  {leaf_row5[2], leaf_row4[5], leaf_row3[11], leaf_row2[23], leaf_row1[23], leaf_row0[23]};
             endcase
-        end else if (leaf_value_nxt[0][19:18]==4'b10) begin
+        end else if (leaf_value_nxt[0][19:18]==2'b10) begin
             case (leaf_value_nxt[0][13:12])
                 2'b00: encode_symbol =  {leaf_row5[3], leaf_row4[6], leaf_row3[12], leaf_row2[24], leaf_row1[24], leaf_row0[24]};
                 2'b01: encode_symbol =  {leaf_row5[3], leaf_row4[6], leaf_row3[12], leaf_row2[25], leaf_row1[25], leaf_row0[25]};
                 2'b10: encode_symbol =  {leaf_row5[3], leaf_row4[6], leaf_row3[13], leaf_row2[26], leaf_row1[26], leaf_row0[26]};
                 2'b11: encode_symbol =  {leaf_row5[3], leaf_row4[6], leaf_row3[13], leaf_row2[27], leaf_row1[27], leaf_row0[27]};
             endcase
-        end else if (leaf_value_nxt[0][19:18]==4'b11) begin
+        end else if (leaf_value_nxt[0][19:18]==2'b11) begin
             case (leaf_value_nxt[0][15:14])
                 2'b00: encode_symbol =  {leaf_row5[3], leaf_row4[7], leaf_row3[14], leaf_row2[28], leaf_row1[28], leaf_row0[28]};
                 2'b01: encode_symbol =  {leaf_row5[3], leaf_row4[7], leaf_row3[14], leaf_row2[29], leaf_row1[29], leaf_row0[29]};
