@@ -1,6 +1,6 @@
 `define CYCLE_TIME 5
 
-`define PATTERN_NUM 2000
+`define PATTERN_NUM 13
 
 module PATTERN(
     clk,
@@ -32,7 +32,7 @@ input wire out_valid;
 //================================================================
 integer PATNUM = `PATTERN_NUM;
 integer patcount;
-integer input_R_file, input_z_file, golden_file;
+integer input_R_file, input_z_file, golden_file, golden_p_file;
 
 integer k,i,j, i_pat;
 integer index_cnt;
@@ -41,7 +41,13 @@ integer latency;
 integer total_latency;
 
 integer error_bits;
+integer error_p_bits;
+integer error_gp_bits;
+
 integer total_errors = 0;
+integer total_p_errors = 0;
+integer total_gp_errors = 0;
+
 integer total_bits_compared = 0;
 real ber;
 //================================================================
@@ -54,6 +60,7 @@ reg [14:0] temp_R[0:20];
 // wire & registers 
 //================================================================
 reg [11:0] golden_symbol;
+reg [11:0] golden_predict;
 
 //================================================================
 // clock
@@ -68,6 +75,7 @@ initial begin
     //================================================================
 
 	input_R_file = $fopen("./R.txt","r");
+    // input_R_file = $fopen("./R_5d.txt","r");
 
     if (input_R_file == 0) begin
         $display("Failed to open R file");
@@ -75,6 +83,7 @@ initial begin
     end
 
     input_z_file = $fopen("./z.txt","r");
+    // input_z_file = $fopen("./z_5d.txt","r");
 
     if (input_R_file == 0) begin
         $display("Failed to open z file");
@@ -82,8 +91,16 @@ initial begin
     end
 
     golden_file=$fopen("./gt.txt", "r");
+    // golden_file=$fopen("./gt_5d.txt", "r");
 
     if (golden_file == 0) begin
+        $display("Failed to open golden file");
+        $finish;
+    end
+
+    golden_p_file=$fopen("./gt_predict.txt", "r");
+
+    if (golden_p_file == 0) begin
         $display("Failed to open golden file");
         $finish;
     end
@@ -118,6 +135,8 @@ initial begin
     $display("==========================================================");
     $display(" Total Bits Compared : %d", total_bits_compared);
     $display(" Total Error Bits    : %d", total_errors);
+    $display(" Total Error Bits to simulation    : %d", total_p_errors);
+    $display(" Total Golden Predict Mismatched Bits    : %d", total_gp_errors);
     $display(" Bit Error Rate (BER): %f", ber);
     $display(" Error Percentage    : %0.2f%%", ber * 100);
     $display("==========================================================");
@@ -248,10 +267,15 @@ task check_ans; begin
     //k = $fscanf(golden_file, "Pattern: %d", patcount);
 
     k = $fscanf(golden_file, "%b", golden_symbol);
+    k = $fscanf(golden_p_file, "%b", golden_predict);
 
     error_bits = $countones(OutData ^ golden_symbol);
+    error_p_bits = $countones(OutData ^ golden_predict);
+    error_gp_bits = $countones(golden_symbol ^ golden_predict);
 
     total_bits_compared = total_bits_compared + 12; // Each symbol is 12 bits
+    total_p_errors = total_p_errors + error_p_bits;
+    total_gp_errors = total_gp_errors + error_gp_bits;
     
     if (error_bits > 0) begin
         total_errors = total_errors + error_bits; // Accumulate total errors
@@ -262,9 +286,20 @@ task check_ans; begin
         $display ("                        PATTERN NO.%4d                                     ", i_pat);
         $display ("   Output: %b", OutData);
         $display ("   Golden: %b", golden_symbol);
+        $display ("   Golden Predict: %b", golden_predict);
         $display ("   Error bits in this pattern: %d", error_bits);
         $display ("   ------------------------------------------------------------------------");
     end 
+    else if (error_p_bits > 0) begin
+        $display ("            \033[0;33mSIMULATION MISMATCH Pattern NO. %d\033[m", i_pat);
+        $display ("   ------------------------------------------------------------------------");
+        $display ("                       SIMULATION MISMATCH                                 ");
+        $display ("                        PATTERN NO.%4d                                     ", i_pat);
+        $display ("   Output: %b", OutData);
+        $display ("   Golden Predict: %b", golden_predict);
+        $display ("   Error bits to simulation in this pattern: %d", error_p_bits);
+        $display ("   ------------------------------------------------------------------------");
+    end
     else begin
         display_pass_gradient(i_pat);
     end

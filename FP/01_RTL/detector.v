@@ -162,10 +162,6 @@ wire  [23:0] sum2leaf[0:1];
 always @(*) begin
     for(integer i=0; i<5; i=i+1) begin
         case (pre_multiplicant[i])
-            // 2'b00: multiplicant[i][1] =  15'b111111000011010;
-            // 2'b01: multiplicant[i][1] =  15'b111111101011110;
-            // 2'b10: multiplicant[i][1] =  15'b000000010100010;
-            // 2'b11: multiplicant[i][1] =  15'b000000111100110;
             2'b11: multiplicant[i][1] =  15'b111111100001101;
             2'b10: multiplicant[i][1] =  15'b111111110101111;
             2'b00: multiplicant[i][1] =  15'b000000001010001;
