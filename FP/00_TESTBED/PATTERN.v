@@ -1,6 +1,6 @@
 `define CYCLE_TIME 5
 
-`define PATTERN_NUM 13
+`define PATTERN_NUM 2000
 
 module PATTERN(
     clk,

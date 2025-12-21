@@ -657,7 +657,7 @@ always @(*) begin
         multiplicant[0][0] = R_row0[1]; pre_multiplicant[0] = leaf_row1[7];
     end else if (state==LAYER1 && cnt == 'd8) begin
         multiplicant[4][0] = R_row0[5]; pre_multiplicant[4] = leaf_row5[0];
-        multiplicant[3][0] = R_row0[4]; pre_multiplicant[3] = leaf_row4[1];
+        multiplicant[3][0] = R_row0[4]; pre_multiplicant[3] = leaf_row4[2];
         multiplicant[2][0] = R_row0[3]; pre_multiplicant[2] = leaf_row3[4];
         multiplicant[1][0] = R_row0[2]; pre_multiplicant[1] = leaf_row2[8];
         multiplicant[0][0] = R_row0[1]; pre_multiplicant[0] = leaf_row1[8];
